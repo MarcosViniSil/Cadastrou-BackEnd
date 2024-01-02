@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
+import registered.project.api.entities.User
 
 
 @Configuration
@@ -19,8 +20,10 @@ class SecurityConfiguration{
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
 
         return http.csrf { csfr -> csfr.disable() }.authorizeHttpRequests{
-            auto -> auto.requestMatchers("/h2-console/**").permitAll()}.headers { fr -> fr.frameOptions{f -> f.sameOrigin()}}
+            auto -> auto.requestMatchers("/h2-console/**").permitAll().anyRequest().permitAll()}.headers { fr -> fr.frameOptions{f -> f.sameOrigin()}}
             .sessionManagement{session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)}.build()
         }
+
+
     }
 
