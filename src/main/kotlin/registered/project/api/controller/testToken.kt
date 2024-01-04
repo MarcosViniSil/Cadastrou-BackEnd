@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 import registered.project.api.auth.AuthorizationService
 
 import registered.project.api.dtos.LoginDTO
+import registered.project.api.dtos.RegisterAdmDTO
 import registered.project.api.dtos.RegisterDTO
 import registered.project.api.dtos.TokenDTO
 import registered.project.api.repositories.UserRepository
@@ -26,6 +27,12 @@ class testToken(
     fun loginUser(@RequestBody user2: LoginDTO): ResponseEntity<Any> {
 
         return authorizationService.login(user2)
+
+    }
+    @PostMapping("/CAdm")
+    fun cadAdm(@RequestBody user2: RegisterAdmDTO): ResponseEntity<Any> {
+
+        return authorizationService.registerAdm(user2)
 
     }
     @PostMapping("/Token")
