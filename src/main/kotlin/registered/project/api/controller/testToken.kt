@@ -8,6 +8,7 @@ import registered.project.api.auth.AuthorizationService
 
 import registered.project.api.dtos.LoginDTO
 import registered.project.api.dtos.RegisterDTO
+import registered.project.api.dtos.TokenDTO
 import registered.project.api.repositories.UserRepository
 
 
@@ -18,10 +19,6 @@ class testToken(
 ) {
     @PostMapping("/Cuser")
     fun cadUser(@RequestBody user2: RegisterDTO):  ResponseEntity<Any> {
-        val user=userRepository?.findByEmailCustom(user2.email)
-        if (user!=null){
-            return ResponseEntity.badRequest().build()
-        }
         return authorizationService.registerUser(user2)
 
     }
@@ -30,5 +27,9 @@ class testToken(
 
         return authorizationService.login(user2)
 
+    }
+    @PostMapping("/Token")
+    fun testToken(@RequestBody token:TokenDTO):String{
+        return authorizationService.verifyToken(token.token!!)
     }
 }

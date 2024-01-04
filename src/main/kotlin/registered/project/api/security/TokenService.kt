@@ -12,12 +12,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import org.springframework.beans.factory.annotation.Value
 
 
 @Service
 class TokenService(
-    private val secretKey: String = "secretKey"
+
 ) {
+    @Value("\${api-jwt-secret-key}")
+    private lateinit var secretKey: String
     fun generatedToken(user: User): String {
         try {
             var algorithm: Algorithm = Algorithm.HMAC256(secretKey)

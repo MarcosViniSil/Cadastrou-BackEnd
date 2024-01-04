@@ -24,11 +24,11 @@ class User(
     @Enumerated(EnumType.STRING)
     var role: UserRole? = null,
 
-    var cardNumber: Int? = null,
+    var cardsNumbers: Int? = null,
     @OneToMany
     var cards: MutableList<Card>? = null,
 
-    var isDelete:Boolean=false,
+    var isToDelete:Boolean=false,
 
     @Temporal(TemporalType.TIMESTAMP)
     var createdAt:Date?=null,
