@@ -15,17 +15,8 @@ class Card(
     private var colorNumber: Int? = null,
     @Enumerated(EnumType.STRING)
     private var frequency: FrequencyCard? = null,
-    @ManyToOne
-    @JsonBackReference
-    private var user: User? = null,
 
-    @ManyToOne
-    @JsonBackReference
-    private var userToDelete: User? = null,
 
-    @ManyToOne
-    @JsonBackReference
-    private var userView: User? = null
 
 ) {
 }

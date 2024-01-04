@@ -13,7 +13,7 @@ class teste(private var userRepository:UserRepository){
     @PostMapping("/user")
     fun cadUser(@RequestBody user2:LoginDTO):String{
         var user = User()
-        user.name=user2.name
+
         user.email=user2.email
         user.password=user2.password
         user.role=UserRole.USER

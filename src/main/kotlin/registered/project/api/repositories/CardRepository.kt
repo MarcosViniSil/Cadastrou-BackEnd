@@ -1,7 +1,7 @@
 package registered.project.api.repositories
 
 import org.springframework.data.jpa.repository.JpaRepository
-import registered.project.api.entities.Adm
+import registered.project.api.entities.Card
 
-interface AdmRepository:JpaRepository<Adm,Long> {
+interface CardRepository:JpaRepository<Card,Long> {
 }
