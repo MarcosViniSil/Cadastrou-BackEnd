@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import registered.project.api.auth.AuthorizationService
+import registered.project.api.service.auth.AuthorizationService
 
 import registered.project.api.dtos.LoginDTO
 import registered.project.api.dtos.RegisterAdmDTO
