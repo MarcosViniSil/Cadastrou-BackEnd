@@ -1,6 +1,5 @@
 package registered.project.api.entities
 
-import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import registered.project.api.enums.FrequencyCard
 import java.sql.Date

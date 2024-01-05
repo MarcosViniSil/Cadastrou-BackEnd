@@ -3,40 +3,33 @@ package registered.project.api.controller
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import registered.project.api.service.auth.AuthorizationService
-
 import registered.project.api.dtos.LoginDTO
 import registered.project.api.dtos.RegisterAdmDTO
 import registered.project.api.dtos.RegisterDTO
-import registered.project.api.dtos.TokenDTO
-import registered.project.api.repositories.UserRepository
-
+import registered.project.api.service.auth.AuthorizationService
 
 @RestController
-class testToken(
-    private val authorizationService: AuthorizationService,
-    private val userRepository: UserRepository,
+@RequestMapping("/User")
+class UserController(
+    private val authorizationService: AuthorizationService
 ) {
-    @PostMapping("/Cuser")
-    fun cadUser(@RequestBody user2: RegisterDTO):  ResponseEntity<Any> {
+    @PostMapping("/Register")
+    fun cadUser(@RequestBody user2: RegisterDTO): ResponseEntity<Any> {
         return authorizationService.registerUser(user2)
 
     }
-    @PostMapping("/Luser")
+    @PostMapping("/Login")
     fun loginUser(@RequestBody user2: LoginDTO): ResponseEntity<Any> {
 
         return authorizationService.login(user2)
 
     }
-    @PostMapping("/CAdm")
+    @PostMapping("/AdmRegister")
     fun cadAdm(@RequestBody user2: RegisterAdmDTO): ResponseEntity<Any> {
 
         return authorizationService.registerAdm(user2)
 
-    }
-    @PostMapping("/Token")
-    fun testToken(@RequestBody token:TokenDTO):String{
-        return authorizationService.verifyToken(token.token!!)
     }
 }

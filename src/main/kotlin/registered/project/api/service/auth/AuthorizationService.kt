@@ -1,6 +1,5 @@
 package registered.project.api.service.auth
 
-import org.springframework.beans.factory.annotation.Value
 import java.sql.Date;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
