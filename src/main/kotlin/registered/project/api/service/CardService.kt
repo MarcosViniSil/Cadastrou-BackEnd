@@ -1,8 +1,11 @@
 package registered.project.api.service
 
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import registered.project.api.dtos.AddCardDTO
+import registered.project.api.dtos.PageOffSetDTO
 import registered.project.api.entities.Card
 import registered.project.api.entities.User
 import registered.project.api.repositories.CardRepository
@@ -19,6 +22,14 @@ class CardService(
     private val cardRepository: CardRepository
 ) {
 
+    private fun findUser(token:String):String? {
+        val responseToken: String = this.authorizationService.verifyToken(token)
+        if (responseToken != "INVALID TOKEN") {
+            return responseToken
+
+        }
+        return null
+    }
     fun addCardUser(addCardDTO: AddCardDTO): ResponseEntity<Any> {
         val responseToken:String = this.authorizationService.verifyToken(addCardDTO.token)
         if(responseToken!="INVALID TOKEN"){
@@ -32,9 +43,14 @@ class CardService(
                     }else{
                         listCards.add(card)
                     }
+                    if(user.cardsNumbers==null){
+                        user.cardsNumbers=1
+                    }else{
+                        user.cardsNumbers= user.cardsNumbers!!.plus(1)
+                    }
+                    card.user=user
                     user.cards=listCards
                     user.updatedAt= Date(System.currentTimeMillis())
-                    user.cardsNumbers=user.cardsNumbers+1
                     cardRepository.save(card)
                     userRepository.save(user)
 
@@ -46,14 +62,24 @@ class CardService(
         }
         return ResponseEntity.ok().build()
     }
-  private  fun createCard(addCardDTO: AddCardDTO): Card {
+    private  fun createCard(addCardDTO: AddCardDTO): Card {
         return Card(
             name = addCardDTO.name, description = addCardDTO.description,
             dateFinish = addCardDTO.dateFinish, colorNumber = generateCodeCard(), frequency = addCardDTO.frequency
-        )
+                   )
     }
-
-   private fun generateCodeCard():Int{
+    private fun generateCodeCard():Int{
         return (1..6).random()
+    }
+    fun listCardsUser(token:String,offset:Int):MutableList<Card>?{
+        val user:String?=this.findUser(token)
+        if(user!=null){
+            val pageable: Pageable = PageRequest.of(offset, 3)
+            var listCards:MutableList<Card>? = userRepository.listCards(user,pageable)
+            if(listCards!=null){
+                return listCards
+            }
+        }
+        return null
     }
 }

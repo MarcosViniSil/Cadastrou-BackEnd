@@ -54,7 +54,7 @@ class AuthorizationService(
         }
         val encryptedPassword = BCryptPasswordEncoder().encode(password)
         val newUser = User()
-        newUser.testeN = name
+        newUser.nameUser = name
         newUser.email = email
         newUser.password = encryptedPassword
         newUser.role = role

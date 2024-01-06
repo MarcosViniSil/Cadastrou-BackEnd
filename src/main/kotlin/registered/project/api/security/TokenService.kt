@@ -43,7 +43,7 @@ class TokenService(
                 .verify(token)
                 .getSubject();
         } catch (exception: JWTVerificationException) {
-            return ""
+            return "INVALID TOKEN"
         }
     }
 

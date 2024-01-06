@@ -1,5 +1,6 @@
 package registered.project.api.entities
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import registered.project.api.enums.FrequencyCard
 import java.sql.Date
@@ -14,7 +15,9 @@ class Card(
     private var colorNumber: Int? = null,
     @Enumerated(EnumType.STRING)
     private var frequency: FrequencyCard? = null,
-
+    @ManyToOne
+    @JsonBackReference
+     var user:User?=null
 
 
 ) {

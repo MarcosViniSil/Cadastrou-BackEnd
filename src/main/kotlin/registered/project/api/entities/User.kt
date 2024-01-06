@@ -13,7 +13,7 @@ class User(
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private var id: Long? = null,
 
-    var testeN: String? = null,
+    var nameUser: String? = null,
 
     @get:JvmName("getName")
     @Column(unique = true)
@@ -25,7 +25,7 @@ class User(
     var role: UserRole? = null,
 
     var cardsNumbers: Int? = null,
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL])
     var cards: MutableList<Card>? = null,
 
     var isToDelete:Boolean=false,

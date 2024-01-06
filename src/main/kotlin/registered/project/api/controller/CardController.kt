@@ -1,12 +1,10 @@
 package registered.project.api.controller
 
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import registered.project.api.dtos.AddCardDTO
 import registered.project.api.dtos.RegisterDTO
+import registered.project.api.entities.Card
 import registered.project.api.service.CardService
 
 @RestController
@@ -18,6 +16,9 @@ class CardController(
     @PostMapping("/Register")
     fun cardRegister(@RequestBody user2: AddCardDTO): ResponseEntity<Any> {
         return cardService.addCardUser(user2)
-
+    }
+    @GetMapping("/{token}/{offset}")
+    fun listCardsUser(@PathVariable("token") token:String,@PathVariable("offset") offset:Int):MutableList<Card>?{
+        return cardService.listCardsUser(token,offset)
     }
 }
