@@ -12,6 +12,8 @@ interface UserRepository:JpaRepository<User,Long> {
     @Query("SELECT u FROM tb_user u WHERE u.email = :email")
     fun findByEmailCustom(email: String): User?
 
-    @Query("SELECT cards FROM tb_user u WHERE u.email = :email")
-    fun listCards(email:String,pageable: Pageable):MutableList<Card>?
+    @Query("SELECT id FROM tb_user u WHERE u.email = :email")
+    fun findId(email:String):Long?
+
+
 }

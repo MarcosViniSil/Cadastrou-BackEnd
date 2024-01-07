@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import registered.project.api.dtos.AddCardDTO
+import registered.project.api.dtos.ListCardsDTO
 import registered.project.api.dtos.PageOffSetDTO
 import registered.project.api.entities.Card
 import registered.project.api.entities.User
@@ -71,14 +72,20 @@ class CardService(
     private fun generateCodeCard():Int{
         return (1..6).random()
     }
-    fun listCardsUser(token:String,offset:Int):MutableList<Card>?{
-        val user:String?=this.findUser(token)
-        if(user!=null){
-            val pageable: Pageable = PageRequest.of(offset, 3)
-            var listCards:MutableList<Card>? = userRepository.listCards(user,pageable)
-            if(listCards!=null){
-                return listCards
+    fun listCardsUser(token:String,offset:Int):ListCardsDTO?{
+        val email:String?=this.findUser(token)
+        if(email!=null){
+            var idUser:Long? = userRepository.findId(email)
+            if(idUser!=null){
+                val pageable: Pageable = PageRequest.of(offset, 2)
+                val listCards:MutableList<Card>?=cardRepository.listarTodasAS(idUser,pageable)
+                val cards:ListCardsDTO = ListCardsDTO(card=listCards)
+
+
+                return cards
+
             }
+
         }
         return null
     }
