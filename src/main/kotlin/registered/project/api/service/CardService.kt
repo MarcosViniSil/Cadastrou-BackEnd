@@ -77,34 +77,40 @@ class CardService(
     }
 
     override fun listCardsUser(token: String, offset: Int): ListCardsDTO? {
-        val email: String? = this.findUser(token)
-        if (email != null) {
-            var idUser: Long? = userRepository.findId(email)
-            if (idUser != null) {
-                val pageable: Pageable = PageRequest.of(offset, 4)
-                val listCards: MutableList<Card>? = cardRepository.listCardsUser(idUser, pageable)
-                val cards: ListCardsDTO = ListCardsDTO(card = listCards)
+        if (validationCard.validateTokenAndOffset(token, offset)) {
+            val email: String? = this.findUser(token)
+            if (email != null) {
+                var idUser: Long? = userRepository.findId(email)
+                if (idUser != null) {
+                    val pageable: Pageable = PageRequest.of(offset, 4)
+                    val listCards: MutableList<Card>? = cardRepository.listCardsUser(idUser, pageable)
+                    val cards: ListCardsDTO = ListCardsDTO(card = listCards)
 
 
-                return cards
+                    return cards
+
+                }
 
             }
-
         }
         return null
     }
 
     fun deleteCard(token: String, idCard: Long?) {
-        val email: String? = this.findUser(token)
-        if (email != null && idCard != null) {
-            val user: User? = userRepository.findByEmailCustom(email)
-            if (user != null) {
-                val cardToDelete: Card = cardRepository.findByIdAndUser_Id(idCard, user.id)
+        if (validationCard.validateCardDelete(token, idCard)) {
+            val email: String? = this.findUser(token)
+            if (email != null) {
+                val user: User? = userRepository.findByEmailCustom(email)
+                if (user != null) {
+                    val cardToDelete: Card = cardRepository.findByIdAndUser_Id(idCard, user.id)
 
-                user.cards?.remove(cardToDelete)
-                cardRepository.delete(cardToDelete)
-                userRepository.save(user)
+                    user.cards?.remove(cardToDelete)
+                    user.cardsNumbers = user.cardsNumbers?.minus(1)
+                    user.updatedAt = Date(System.currentTimeMillis())
+                    cardRepository.delete(cardToDelete)
+                    userRepository.save(user)
 
+                }
             }
         }
 

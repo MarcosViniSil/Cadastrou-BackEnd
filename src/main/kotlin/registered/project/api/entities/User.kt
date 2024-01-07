@@ -25,7 +25,7 @@ class User(
     var role: UserRole? = null,
 
     var cardsNumbers: Int? = null,
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL])
     var cards: MutableList<Card>? = null,
 
     var isToDelete:Boolean=false,

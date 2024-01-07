@@ -26,10 +26,10 @@ class AuthorizationService(
     private val context: ApplicationContext,
     private val userRepository: UserRepository,
     private val tokenService: TokenService,
-    private  var validationAuth: ValidationAuth
+    private var validationAuth: ValidationAuth
 
 
-) : UserDetailsService,UserProjection {
+) : UserDetailsService, UserProjection {
 
     private lateinit var authenticationManager: AuthenticationManager
 
@@ -37,18 +37,19 @@ class AuthorizationService(
         return userRepository!!.findByEmailCustom(email)
     }
 
-    override fun login( @RequestBody data: LoginDTO): ResponseEntity<Any> {
-        if(validationAuth.validateLogin(data) ) {
+    override fun login(@RequestBody data: LoginDTO): ResponseEntity<Any> {
+        if (validationAuth.validateLogin(data)) {
             authenticationManager = context.getBean(AuthenticationManager::class.java)
             val usernamePassword = UsernamePasswordAuthenticationToken(data.email, data.password)
             val auth = authenticationManager!!.authenticate(usernamePassword)
             val token: String = tokenService!!.generatedToken(auth.principal as User)
             return ResponseEntity.ok<Any>(TokenDTO(token))
-        }else{
+        } else {
             return ResponseEntity.badRequest().build()
         }
     }
-    override fun register(name:String,password:String,email:String,role:UserRole):ResponseEntity<Any>{
+
+    override fun register(name: String, password: String, email: String, role: UserRole): ResponseEntity<Any> {
         val user = userRepository?.findByEmailCustom(email)
         if (user != null) {
             return ResponseEntity.badRequest().build()
@@ -63,26 +64,29 @@ class AuthorizationService(
         userRepository?.save(newUser)
         return ResponseEntity.ok().build()
     }
-    override fun registerUser(@RequestBody registerDto: RegisterDTO):ResponseEntity<Any> {
-        if(validationAuth.validateRegister(registerDto.email,registerDto.name,registerDto.password)) {
-           return this.register(registerDto.name,registerDto.password,registerDto.email,UserRole.USER)
-        }else{
+
+    override fun registerUser(@RequestBody registerDto: RegisterDTO): ResponseEntity<Any> {
+        if (validationAuth.validateRegister(registerDto.email, registerDto.name, registerDto.password)) {
+            return this.register(registerDto.name, registerDto.password, registerDto.email, UserRole.USER)
+        } else {
             //TODO Exception some data invalid
             return ResponseEntity.badRequest().build()
         }
     }
-    override fun registerAdm(@RequestBody registerAdmDTO: RegisterAdmDTO):ResponseEntity<Any>{
-        if(validationAuth.validateRegisterAdm(registerAdmDTO)){
-           return this.register(registerAdmDTO.name,registerAdmDTO.password,registerAdmDTO.email,UserRole.ADMIN)
-        }else{
+
+    override fun registerAdm(@RequestBody registerAdmDTO: RegisterAdmDTO): ResponseEntity<Any> {
+        if (validationAuth.validateRegisterAdm(registerAdmDTO)) {
+            return this.register(registerAdmDTO.name, registerAdmDTO.password, registerAdmDTO.email, UserRole.ADMIN)
+        } else {
             //TODO some data invalid
         }
         return ResponseEntity.badRequest().build()
     }
-    fun verifyToken(token:String):String{
-        if(validationAuth.validateToken(token)) {
+
+    fun verifyToken(token: String): String {
+        if (validationAuth.validateToken(token)) {
             return tokenService.validateToken(token)
-        }else{
+        } else {
             return "INVALID TOKEN"
         }
     }
