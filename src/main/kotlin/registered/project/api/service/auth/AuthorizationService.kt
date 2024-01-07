@@ -15,6 +15,7 @@ import registered.project.api.dtos.RegisterDTO
 import registered.project.api.dtos.TokenDTO
 import registered.project.api.entities.User
 import registered.project.api.enums.UserRole
+import registered.project.api.projections.UserProjection
 import registered.project.api.repositories.UserRepository
 import registered.project.api.security.TokenService
 import registered.project.api.service.validation.ValidationAuth
@@ -28,7 +29,7 @@ class AuthorizationService(
     private  var validationAuth: ValidationAuth
 
 
-) : UserDetailsService {
+) : UserDetailsService,UserProjection {
 
     private lateinit var authenticationManager: AuthenticationManager
 
@@ -36,7 +37,7 @@ class AuthorizationService(
         return userRepository!!.findByEmailCustom(email)
     }
 
-    fun login( @RequestBody data: LoginDTO): ResponseEntity<Any> {
+    override fun login( @RequestBody data: LoginDTO): ResponseEntity<Any> {
         if(validationAuth.validateLogin(data) ) {
             authenticationManager = context.getBean(AuthenticationManager::class.java)
             val usernamePassword = UsernamePasswordAuthenticationToken(data.email, data.password)
@@ -47,7 +48,7 @@ class AuthorizationService(
             return ResponseEntity.badRequest().build()
         }
     }
-    fun register(name:String,password:String,email:String,role:UserRole):ResponseEntity<Any>{
+    override fun register(name:String,password:String,email:String,role:UserRole):ResponseEntity<Any>{
         val user = userRepository?.findByEmailCustom(email)
         if (user != null) {
             return ResponseEntity.badRequest().build()
@@ -62,7 +63,7 @@ class AuthorizationService(
         userRepository?.save(newUser)
         return ResponseEntity.ok().build()
     }
-    fun registerUser(@RequestBody registerDto: RegisterDTO):ResponseEntity<Any> {
+    override fun registerUser(@RequestBody registerDto: RegisterDTO):ResponseEntity<Any> {
         if(validationAuth.validateRegister(registerDto.email,registerDto.name,registerDto.password)) {
            return this.register(registerDto.name,registerDto.password,registerDto.email,UserRole.USER)
         }else{
@@ -70,7 +71,7 @@ class AuthorizationService(
             return ResponseEntity.badRequest().build()
         }
     }
-    fun registerAdm(@RequestBody registerAdmDTO: RegisterAdmDTO):ResponseEntity<Any>{
+    override fun registerAdm(@RequestBody registerAdmDTO: RegisterAdmDTO):ResponseEntity<Any>{
         if(validationAuth.validateRegisterAdm(registerAdmDTO)){
            return this.register(registerAdmDTO.name,registerAdmDTO.password,registerAdmDTO.email,UserRole.ADMIN)
         }else{

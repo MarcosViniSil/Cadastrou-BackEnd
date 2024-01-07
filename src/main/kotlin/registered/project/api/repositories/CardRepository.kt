@@ -10,7 +10,10 @@ import registered.project.api.entities.Card
 @Repository
 interface CardRepository : JpaRepository<Card, Long> {
 
-    @Query("SELECT c FROM tb_card c WHERE c.user.id = :userId")
-    fun listarTodasAS(userId: Long, pageable: Pageable): MutableList<Card>?
+    @Query("SELECT c FROM tb_card c WHERE c.user.id = :userId AND c.dateFinish >= CURRENT_DATE ORDER BY dateFinish ASC")
+    fun listCardsUser(userId: Long, pageable: Pageable): MutableList<Card>?
+
+    fun findByIdAndUser_Id(cardId: Long?, userId: Long?):Card
+
 }
 

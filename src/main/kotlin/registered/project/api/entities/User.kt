@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity(name = "tb_user")
 class User(
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long? = null,
+     var id: Long? = null,
 
     var nameUser: String? = null,
 
@@ -25,7 +25,7 @@ class User(
     var role: UserRole? = null,
 
     var cardsNumbers: Int? = null,
-    @OneToMany(cascade = [CascadeType.ALL])
+    @OneToMany
     var cards: MutableList<Card>? = null,
 
     var isToDelete:Boolean=false,
