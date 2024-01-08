@@ -19,7 +19,6 @@ import registered.project.api.projections.UserProjection
 import registered.project.api.repositories.UserRepository
 import registered.project.api.security.TokenService
 import registered.project.api.service.validation.ValidationAuth
-import java.util.regex.Pattern
 
 @Service
 class AuthorizationService(
@@ -51,9 +50,6 @@ class AuthorizationService(
 
     override fun register(name: String, password: String, email: String, role: UserRole): ResponseEntity<Any> {
         val user = userRepository?.findByEmailCustom(email)
-        if (user != null) {
-            return ResponseEntity.badRequest().build()
-        }
         val encryptedPassword = BCryptPasswordEncoder().encode(password)
         val newUser = User()
         newUser.nameUser = name
@@ -61,6 +57,11 @@ class AuthorizationService(
         newUser.password = encryptedPassword
         newUser.role = role
         newUser.createdAt = Date(System.currentTimeMillis())
+        if (user != null) {
+            newUser.updatedAt = Date(System.currentTimeMillis())
+        } else {
+            newUser.createdAt = Date(System.currentTimeMillis())
+        }
         userRepository?.save(newUser)
         return ResponseEntity.ok().build()
     }

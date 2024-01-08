@@ -36,13 +36,27 @@ class UserController(
 
     }
 
+    @PutMapping("/UpdateUser")
+    fun updateUser(@RequestBody userUpdate: RegisterDTO): ResponseEntity<Any> {
+
+        return authorizationService.registerUser(userUpdate)
+
+    }
+
+    @PutMapping("/UpdateAdm")
+    fun updateAdm(@RequestBody admUpdate: RegisterAdmDTO): ResponseEntity<Any> {
+
+        return authorizationService.registerAdm(admUpdate)
+
+    }
+
     @DeleteMapping("/delete/{id}")
     fun deleteUser(@PathVariable("id") id: Long?) {
         userService.deleteUser(id)
     }
 
     @GetMapping("/List/{offset}")
-    fun listUsersToAdm(@PathVariable("offset") offset: Int):MutableList<UserDTO>? {
+    fun listUsersToAdm(@PathVariable("offset") offset: Int): MutableList<UserDTO>? {
         return userService.listUsers(offset)
     }
 }
