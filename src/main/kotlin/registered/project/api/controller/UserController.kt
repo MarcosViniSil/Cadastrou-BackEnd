@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*
 import registered.project.api.dtos.LoginDTO
 import registered.project.api.dtos.RegisterAdmDTO
 import registered.project.api.dtos.RegisterDTO
+import registered.project.api.dtos.UserDTO
+import registered.project.api.entities.User
 import registered.project.api.service.UserService
 import registered.project.api.service.auth.AuthorizationService
 
@@ -19,12 +21,14 @@ class UserController(
         return authorizationService.registerUser(user2)
 
     }
+
     @PostMapping("/Login")
     fun loginUser(@RequestBody user2: LoginDTO): ResponseEntity<Any> {
 
         return authorizationService.login(user2)
 
     }
+
     @PostMapping("/AdmRegister")
     fun cadAdm(@RequestBody user2: RegisterAdmDTO): ResponseEntity<Any> {
 
@@ -32,8 +36,13 @@ class UserController(
 
     }
 
-    @DeleteMapping("/delete/{token}")
-    fun deleteUser(@PathVariable("token") token:String){
-        userService.deleteUser(token)
+    @DeleteMapping("/delete/{id}")
+    fun deleteUser(@PathVariable("id") id: Long?) {
+        userService.deleteUser(id)
+    }
+
+    @GetMapping("/List/{offset}")
+    fun listUsersToAdm(@PathVariable("offset") offset: Int):MutableList<UserDTO>? {
+        return userService.listUsers(offset)
     }
 }

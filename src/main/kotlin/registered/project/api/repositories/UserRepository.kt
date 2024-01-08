@@ -3,17 +3,18 @@ package registered.project.api.repositories
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Repository
-import registered.project.api.entities.Card
+import registered.project.api.dtos.UserDTO
 import registered.project.api.entities.User
+import registered.project.api.enums.UserRole
+
 @Repository
 interface UserRepository:JpaRepository<User,Long> {
     @Query("SELECT u FROM tb_user u WHERE u.email = :email")
     fun findByEmailCustom(email: String): User?
 
-    @Query("SELECT id FROM tb_user u WHERE u.email = :email")
-    fun findId(email:String):Long?
+    @Query(nativeQuery = true,value="SELECT id, nameUser AS name, cardsNumbers AS numCards FROM tb_user WHERE role != :role")
+    fun listUsersToAdm(pageable: Pageable,role:UserRole): MutableList<UserDTO>?
 
 
 }

@@ -80,10 +80,10 @@ class CardService(
         if (validationCard.validateTokenAndOffset(token, offset)) {
             val email: String? = this.findUser(token)
             if (email != null) {
-                var idUser: Long? = userRepository.findId(email)
-                if (idUser != null) {
+                val user: User? = userRepository.findByEmailCustom(email)
+                if (user != null) {
                     val pageable: Pageable = PageRequest.of(offset, 4)
-                    val listCards: MutableList<Card>? = cardRepository.listCardsUser(idUser, pageable)
+                    val listCards: MutableList<Card>? = cardRepository.listCardsUser(user.id!!, pageable)
                     val cards: ListCardsDTO = ListCardsDTO(card = listCards)
 
 
