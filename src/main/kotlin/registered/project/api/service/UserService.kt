@@ -11,7 +11,7 @@ import registered.project.api.service.auth.AuthorizationService
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val authorizationService: AuthorizationService
+    private val authorizationService: AuthorizationService,
 ) {
 
     private fun findUser(token: String): String? {

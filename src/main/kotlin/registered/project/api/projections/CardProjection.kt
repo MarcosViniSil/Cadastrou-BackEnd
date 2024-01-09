@@ -8,5 +8,5 @@ interface CardProjection {
 
     fun addCardUser(addCardDTO: AddCardDTO): ResponseEntity<Any>
 
-    fun listCardsUser(token:String,offset:Int): ListCardsDTO?
+    fun listCardsUser(offset:Int): ListCardsDTO?
 }

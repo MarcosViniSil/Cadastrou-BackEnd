@@ -20,7 +20,8 @@ class CardService(
     private val userRepository: UserRepository,
     private val authorizationService: AuthorizationService,
     private val validationCard: ValidationCard,
-    private val cardRepository: CardRepository
+    private val cardRepository: CardRepository,
+    private val recoverToken:RecoverToken
 ) : CardProjection {
 
     private fun findUser(token: String): String? {
@@ -44,7 +45,8 @@ class CardService(
     }
 
     override fun addCardUser(addCardDTO: AddCardDTO): ResponseEntity<Any> {
-        val responseToken: String = this.authorizationService.verifyToken(addCardDTO.token)
+        val token:String = this.recoverToken.getToken()
+        val responseToken: String = this.authorizationService.verifyToken(token)
         if (responseToken != "INVALID TOKEN") {
             if (validationCard.validateCard(addCardDTO.name, addCardDTO.description, addCardDTO.dateFinish)) {
                 val user: User? = userRepository.findByEmailCustom(responseToken)
@@ -76,7 +78,8 @@ class CardService(
         return ResponseEntity.ok().build()
     }
 
-    override fun listCardsUser(token: String, offset: Int): ListCardsDTO? {
+    override fun listCardsUser(offset: Int): ListCardsDTO? {
+        val token:String = this.recoverToken.getToken()
         if (validationCard.validateTokenAndOffset(token, offset)) {
             val email: String? = this.findUser(token)
             if (email != null) {
@@ -96,7 +99,8 @@ class CardService(
         return null
     }
 
-    fun deleteCard(token: String, idCard: Long?) {
+    fun deleteCard(idCard: Long?) {
+        val token:String = this.recoverToken.getToken()
         if (validationCard.validateCardDelete(token, idCard)) {
             val email: String? = this.findUser(token)
             if (email != null) {
