@@ -2,10 +2,9 @@ package registered.project.api.controller
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import registered.project.api.dtos.LoginDTO
-import registered.project.api.dtos.RegisterAdmDTO
-import registered.project.api.dtos.RegisterDTO
-import registered.project.api.dtos.UserDTO
+import registered.project.api.dtos.*
+import registered.project.api.entities.User
+import registered.project.api.service.AdmService
 import registered.project.api.service.UserService
 import registered.project.api.service.auth.AuthorizationService
 
@@ -13,7 +12,8 @@ import registered.project.api.service.auth.AuthorizationService
 @RequestMapping("/User")
 class UserController(
     private val authorizationService: AuthorizationService,
-    private val userService: UserService,
+    private val admService: AdmService,
+    private val userService: UserService
 
 ) {
     @PostMapping("/Register")
@@ -52,13 +52,25 @@ class UserController(
 
     @DeleteMapping("/delete/{id}")
     fun deleteUser(@PathVariable("id") id: Long?) {
-        userService.deleteUser(id)
+        admService.deleteUser(id)
     }
 
     @GetMapping("/List/{offset}")
     fun listUsersToAdm(@PathVariable("offset") offset: Int): MutableList<UserDTO>? {
-        return userService.listUsers(offset)
+        return admService.listUsers(offset)
     }
+
+    @GetMapping("/List/Delete")
+    fun listUsersToDelete(): MutableList<UsersToDeleteDTO>? {
+        return admService.listUsersToDelete()
+    }
+
+    @GetMapping("/Request/Delete")
+    fun requestDeleteAccount(): ResponseEntity<Any> {
+        return userService.requestDeleteAccount()
+    }
+
+
 
 
 }

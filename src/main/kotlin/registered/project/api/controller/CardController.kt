@@ -17,11 +17,11 @@ class CardController(
         return cardService.addCardUser(user2)
     }
     @GetMapping("/{token}/{offset}")
-    fun listCardsUser(@PathVariable("token") token:String,@PathVariable("offset") offset:Int): ListCardsDTO? {
-        return cardService.listCardsUser(token,offset)
+    fun listCardsUser(@PathVariable("offset") offset:Int): ListCardsDTO? {
+        return cardService.listCardsUser(offset)
     }
     @DeleteMapping("/delete/{token}/{id}")
-    fun deleteCardUser(@PathVariable("token") token:String,@PathVariable("id") id:Long?){
-        cardService.deleteCard(token,id)
+    fun deleteCardUser(@PathVariable("id") id:Long?){
+        cardService.deleteCard(id)
     }
 }

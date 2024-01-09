@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 import registered.project.api.dtos.UserDTO
+import registered.project.api.dtos.UsersToDeleteDTO
 import registered.project.api.entities.User
 import registered.project.api.enums.UserRole
 
@@ -16,5 +17,10 @@ interface UserRepository:JpaRepository<User,Long> {
     @Query(nativeQuery = true,value="SELECT id, nameUser AS name, cardsNumbers AS numCards FROM tb_user WHERE role != :role")
     fun listUsersToAdm(pageable: Pageable,role:UserRole): MutableList<UserDTO>?
 
+    @Query("SELECT u FROM tb_user u WHERE u.role = :role")
+    fun listToAdm(pageable: Pageable,role:UserRole): MutableList<User>?
 
+
+    @Query(nativeQuery = true,value="SELECT id, nameUser AS name, cardsNumbers AS numCards, email FROM tb_user WHERE isToDelete = :toDelete")
+    fun listUsersToDelete(toDelete:Int):MutableList<UsersToDeleteDTO>?
 }
