@@ -26,7 +26,19 @@ class SecurityConfigurations(
             csrf { csfr -> csfr.disable() }
                 .sessionManagement{session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)}
                 .authorizeHttpRequests{
-                auto -> auto.requestMatchers("/h2-console/**").permitAll().anyRequest().permitAll()}
+                auto -> auto.requestMatchers("/h2-console/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/User/Register").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/User/Login").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/User/AdmRegister").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/User/UpdateUser").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/User/UpdateAdm").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/User/delete/{id}").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/User/List/{offset}").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/User/List/Delete").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/User/Request/Delete").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/Card/Register").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/Card/{offset}").permitAll()
+                            .requestMatchers(HttpMethod.DELETE, "/Card/delete/{id}").permitAll() }
             .headers { fr -> fr.frameOptions{f -> f.sameOrigin()}}
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()

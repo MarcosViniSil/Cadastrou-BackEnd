@@ -58,6 +58,7 @@ class AuthorizationService(
         newUser.role = role
         newUser.createdAt = Date(System.currentTimeMillis())
         if (user != null) {
+
             newUser.updatedAt = Date(System.currentTimeMillis())
         } else {
             newUser.createdAt = Date(System.currentTimeMillis())

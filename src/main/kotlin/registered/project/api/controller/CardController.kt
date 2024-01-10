@@ -16,11 +16,11 @@ class CardController(
     fun cardRegister(@RequestBody user2: AddCardDTO): ResponseEntity<Any> {
         return cardService.addCardUser(user2)
     }
-    @GetMapping("/{token}/{offset}")
+    @GetMapping("/{offset}")
     fun listCardsUser(@PathVariable("offset") offset:Int): ListCardsDTO? {
         return cardService.listCardsUser(offset)
     }
-    @DeleteMapping("/delete/{token}/{id}")
+    @DeleteMapping("/delete/{id}")
     fun deleteCardUser(@PathVariable("id") id:Long?){
         cardService.deleteCard(id)
     }

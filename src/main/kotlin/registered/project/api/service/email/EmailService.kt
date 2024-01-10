@@ -15,9 +15,7 @@ import java.util.*
 @Service
 class EmailService(
     private val sendEmail: JavaMailSender,
-    private val recoverToken: RecoverToken,
-    private val authorizationService: AuthorizationService,
-    private val userRepository: UserRepository
+
 ) {
 
 
@@ -40,13 +38,13 @@ class EmailService(
 
     private fun textEmail(user: User): String {
         val text: String =
-            "Olá ADM, hoje, dia: ${this.getDate()} o usuário ${user.nameUser} solicitou a exclusão de sa conta, para concluir a solicitação, entre no sistema e aceite a exclusão clicando no botão vermelho ao lado do nome do usuário. /n EMAIL ENVIADO PELO SISTEMA /t NÃO RESPONDA "
+            "Olá ADM, hoje, dia: ${this.getDate()} o usuário ${user.nameUser} solicitou a exclusão de sua conta, para concluir a solicitação, entre no sistema e aceite a exclusão clicando no botão vermelho ao lado do nome do usuário. EMAIL ENVIADO PELO SISTEMA, NÃO RESPONDA "
         return text
     }
 
     private fun subjectEmail(user: User): String {
         val subject: String =
-            "Solicitação de exclusão de conta do usuário: ${user.nameUser}. Para ver mais detalhes consulte a página de AMD /n DATA SOLICITAÇÃO: ${this.getDate()}"
+            "Solicitação de exclusão de conta do usuário: ${user.nameUser}. Para ver mais detalhes consulte a página de AMD. DATA DA SOLICITAÇÃO: ${this.getDate()}"
         return subject
     }
 
