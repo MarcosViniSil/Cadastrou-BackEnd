@@ -38,7 +38,7 @@ class AdmService(
     fun listUsers(offset: Int): MutableList<UserDTO>? {
         if(offset>=0) {
             val pageable: Pageable = PageRequest.of(offset, 4)
-            val users = userRepository.listUsersToAdm(pageable,UserRole.ADMIN)
+            val users = userRepository.listUsersToAdm(pageable,UserRole.USER)
             return users
         }
 
@@ -46,13 +46,14 @@ class AdmService(
     }
 
     fun alertAdmToDeleteUser(user:User){
-        val pageable: Pageable = PageRequest.of(0, 2)
+        val pageable: Pageable = PageRequest.of(0, 5)
         val adms:MutableList<User>? = userRepository.listToAdm(pageable,UserRole.ADMIN)
         adms?.forEach { e -> this.emailService.sendEmailToAdm(e,user) }
     }
 
-    fun listUsersToDelete():MutableList<UsersToDeleteDTO>?{
-        return userRepository.listUsersToDelete(1)
+    fun listUsersToDelete(offset:Int):MutableList<UsersToDeleteDTO>?{
+        val pageable: Pageable = PageRequest.of(offset, 4)
+        return userRepository.listUsersToDelete(pageable,1)
     }
 
 

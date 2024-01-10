@@ -34,7 +34,7 @@ class SecurityConfigurations(
                             .requestMatchers(HttpMethod.PUT, "/User/UpdateAdm").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.DELETE, "/User/delete/{id}").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET, "/User/List/{offset}").hasRole("ADMIN")
-                            .requestMatchers(HttpMethod.GET, "/User/List/Delete").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/User/List/Delete/{offset}").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET, "/User/Request/Delete").permitAll()
                             .requestMatchers(HttpMethod.POST, "/Card/Register").permitAll()
                             .requestMatchers(HttpMethod.GET, "/Card/{offset}").permitAll()

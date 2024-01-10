@@ -51,20 +51,25 @@ class AuthorizationService(
     override fun register(name: String, password: String, email: String, role: UserRole): ResponseEntity<Any> {
         val user = userRepository?.findByEmailCustom(email)
         val encryptedPassword = BCryptPasswordEncoder().encode(password)
-        val newUser = User()
-        newUser.nameUser = name
-        newUser.email = email
-        newUser.password = encryptedPassword
-        newUser.role = role
-        newUser.createdAt = Date(System.currentTimeMillis())
         if (user != null) {
-
-            newUser.updatedAt = Date(System.currentTimeMillis())
+            user.nameUser = name
+            user.email = email
+            user.password = encryptedPassword
+            user.role = role
+            user.updatedAt = Date(System.currentTimeMillis())
+            userRepository?.save(user)
+            return ResponseEntity.ok().build()
         } else {
+            val newUser = User()
+            newUser.nameUser = name
+            newUser.email = email
+            newUser.password = encryptedPassword
+            newUser.role = role
             newUser.createdAt = Date(System.currentTimeMillis())
+            userRepository?.save(newUser)
+            return ResponseEntity.ok().build()
         }
-        userRepository?.save(newUser)
-        return ResponseEntity.ok().build()
+
     }
 
     override fun registerUser(@RequestBody registerDto: RegisterDTO): ResponseEntity<Any> {

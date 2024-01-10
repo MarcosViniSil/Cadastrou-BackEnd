@@ -14,7 +14,8 @@ interface UserRepository:JpaRepository<User,Long> {
     @Query("SELECT u FROM tb_user u WHERE u.email = :email")
     fun findByEmailCustom(email: String): User?
 
-    @Query(nativeQuery = true,value="SELECT id, nameUser AS name, cardsNumbers AS numCards FROM tb_user WHERE role != :role")
+
+    @Query("SELECT u.id as id, u.nameUser as name, u.cardsNumbers as numCards FROM tb_user u WHERE u.role = :role")
     fun listUsersToAdm(pageable: Pageable,role:UserRole): MutableList<UserDTO>?
 
     @Query("SELECT u FROM tb_user u WHERE u.role = :role")
@@ -22,5 +23,5 @@ interface UserRepository:JpaRepository<User,Long> {
 
 
     @Query(nativeQuery = true,value="SELECT id, nameUser AS name, cardsNumbers AS numCards, email FROM tb_user WHERE isToDelete = :toDelete")
-    fun listUsersToDelete(toDelete:Int):MutableList<UsersToDeleteDTO>?
+    fun listUsersToDelete(pageable: Pageable,toDelete:Int):MutableList<UsersToDeleteDTO>?
 }

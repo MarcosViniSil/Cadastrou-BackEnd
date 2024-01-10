@@ -60,9 +60,9 @@ class UserController(
         return admService.listUsers(offset)
     }
 
-    @GetMapping("/List/Delete")
-    fun listUsersToDelete(): MutableList<UsersToDeleteDTO>? {
-        return admService.listUsersToDelete()
+    @GetMapping("/List/Delete/{offset}")
+    fun listUsersToDelete(@PathVariable("offset") offset:Int): MutableList<UsersToDeleteDTO>? {
+        return admService.listUsersToDelete(offset)
     }
 
     @GetMapping("/Request/Delete")
