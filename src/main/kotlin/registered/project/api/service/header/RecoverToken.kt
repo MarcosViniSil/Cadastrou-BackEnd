@@ -1,4 +1,4 @@
-package registered.project.api.service
+package registered.project.api.service.header
 
 import org.springframework.stereotype.Service
 import registered.project.api.service.header.FeignClientInterceptor

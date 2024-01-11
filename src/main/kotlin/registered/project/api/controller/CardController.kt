@@ -20,6 +20,12 @@ class CardController(
     fun listCardsUser(@PathVariable("offset") offset:Int): ListCardsDTO? {
         return cardService.listCardsUser(offset)
     }
+
+    @GetMapping("/Expired/{offset}")
+    fun listCardsUserExpired(@PathVariable("offset") offset:Int): ListCardsDTO? {
+        return cardService.listCardsUserExpired(offset)
+    }
+
     @DeleteMapping("/delete/{id}")
     fun deleteCardUser(@PathVariable("id") id:Long?){
         cardService.deleteCard(id)

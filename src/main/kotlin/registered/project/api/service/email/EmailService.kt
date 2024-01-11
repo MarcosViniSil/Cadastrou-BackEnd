@@ -5,9 +5,6 @@ import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 import registered.project.api.entities.User
-import registered.project.api.repositories.UserRepository
-import registered.project.api.service.RecoverToken
-import registered.project.api.service.auth.AuthorizationService
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*

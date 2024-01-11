@@ -12,6 +12,7 @@ import registered.project.api.projections.CardProjection
 import registered.project.api.repositories.CardRepository
 import registered.project.api.repositories.UserRepository
 import registered.project.api.service.auth.AuthorizationService
+import registered.project.api.service.header.RecoverToken
 import registered.project.api.service.validation.ValidationCard
 import java.sql.Date
 
@@ -21,10 +22,21 @@ class CardService(
     private val authorizationService: AuthorizationService,
     private val validationCard: ValidationCard,
     private val cardRepository: CardRepository,
-    private val recoverToken:RecoverToken
+    private val recoverToken: RecoverToken
 ) : CardProjection {
 
-    private fun findUser(token: String): String? {
+    private fun findUserByEmail(): User? {
+        val email = this.responseToken()
+        if (email != null) {
+            val user: User? = userRepository.findByEmailCustom(email)
+            if (user != null) {
+                return user
+            }
+
+        }
+        return null
+    }
+    private fun findEmail(token: String): String? {
         val responseToken: String = this.authorizationService.verifyToken(token)
         if (responseToken != "INVALID TOKEN") {
             return responseToken
@@ -32,25 +44,23 @@ class CardService(
         }
         return null
     }
-
     private fun createCard(addCardDTO: AddCardDTO): Card {
         return Card(
             name = addCardDTO.name, description = addCardDTO.description,
             dateFinish = addCardDTO.dateFinish, colorNumber = generateCodeCard(), frequency = addCardDTO.frequency
         )
     }
-
     private fun generateCodeCard(): Int {
         return (1..6).random()
     }
-
+    private fun responseToken(): String? {
+        val token: String = this.recoverToken.getToken()
+        return this.findEmail(token)
+    }
     override fun addCardUser(addCardDTO: AddCardDTO): ResponseEntity<Any> {
-        val token:String = this.recoverToken.getToken()
-        val responseToken: String = this.authorizationService.verifyToken(token)
-        if (responseToken != "INVALID TOKEN") {
-            if (validationCard.validateCard(addCardDTO.name, addCardDTO.description, addCardDTO.dateFinish)) {
-                val user: User? = userRepository.findByEmailCustom(responseToken)
-                if (user != null) {
+        if (validationCard.validateCard(addCardDTO.name, addCardDTO.description, addCardDTO.dateFinish)) {
+            val user: User? = this.findUserByEmail()
+            if (user != null) {
                     val card: Card = this.createCard(addCardDTO)
                     var listCards: MutableList<Card>? = user.cards
                     if (listCards == null) {
@@ -71,52 +81,58 @@ class CardService(
 
                 }
 
-            }
-        } else {
+            } else {
             return ResponseEntity.badRequest().build()
         }
         return ResponseEntity.ok().build()
     }
+    override fun listCardsUserExpiredOrNot(offset: Int, expired: Boolean): ListCardsDTO? {
+        if (validationCard.validateTokenAndOffset(offset)) {
+            val user: User? = this.findUserByEmail()
+            if (user != null) {
 
-    override fun listCardsUser(offset: Int): ListCardsDTO? {
-        val token:String = this.recoverToken.getToken()
-        if (validationCard.validateTokenAndOffset(token, offset)) {
-            val email: String? = this.findUser(token)
-            if (email != null) {
-                val user: User? = userRepository.findByEmailCustom(email)
-                if (user != null) {
-                    val pageable: Pageable = PageRequest.of(offset, 4)
-                    val listCards: MutableList<Card>? = cardRepository.listCardsUser(user.id!!, pageable)
-                    val cards: ListCardsDTO = ListCardsDTO(card = listCards)
+                val listCards: MutableList<Card>?
+                val pageable: Pageable = PageRequest.of(offset, 4)
 
-
-                    return cards
-
+                if (!expired)  {
+                    listCards = cardRepository.listCardsUser(user.id!!, pageable)
+                } else {
+                    listCards = cardRepository.listCardsUserExpired(user.id!!, pageable)
                 }
+                val cards: ListCardsDTO = ListCardsDTO(card = listCards)
+
+
+                return cards
 
             }
         }
         return null
+
     }
+    override fun listCardsUser(offset: Int): ListCardsDTO? {
+        return this.listCardsUserExpiredOrNot(offset, false)
+    }
+    override fun listCardsUserExpired(offset: Int): ListCardsDTO? {
+        return this.listCardsUserExpiredOrNot(offset, true)
+    }
+    override fun deleteCard(idCard: Long?) {
+        if (validationCard.validateCardDelete(idCard)) {
+            val user: User? = this.findUserByEmail()
+            if (user != null) {
+                val cardToDelete: Card = cardRepository.findByIdAndUser_Id(idCard, user.id)
 
-    fun deleteCard(idCard: Long?) {
-        val token:String = this.recoverToken.getToken()
-        if (validationCard.validateCardDelete(token, idCard)) {
-            val email: String? = this.findUser(token)
-            if (email != null) {
-                val user: User? = userRepository.findByEmailCustom(email)
-                if (user != null) {
-                    val cardToDelete: Card = cardRepository.findByIdAndUser_Id(idCard, user.id)
+                user.cards?.remove(cardToDelete)
+                user.cardsNumbers = user.cardsNumbers?.minus(1)
+                user.updatedAt = Date(System.currentTimeMillis())
+                cardRepository.delete(cardToDelete)
+                userRepository.save(user)
 
-                    user.cards?.remove(cardToDelete)
-                    user.cardsNumbers = user.cardsNumbers?.minus(1)
-                    user.updatedAt = Date(System.currentTimeMillis())
-                    cardRepository.delete(cardToDelete)
-                    userRepository.save(user)
-
-                }
             }
+
         }
 
     }
+
+
+
 }

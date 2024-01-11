@@ -35,7 +35,6 @@ class AuthorizationService(
     override fun loadUserByUsername(email: String): User? {
         return userRepository!!.findByEmailCustom(email)
     }
-
     override fun login(@RequestBody data: LoginDTO): ResponseEntity<Any> {
         if (validationAuth.validateLogin(data)) {
             authenticationManager = context.getBean(AuthenticationManager::class.java)
@@ -47,7 +46,6 @@ class AuthorizationService(
             return ResponseEntity.badRequest().build()
         }
     }
-
     override fun register(name: String, password: String, email: String, role: UserRole): ResponseEntity<Any> {
         val user = userRepository?.findByEmailCustom(email)
         val encryptedPassword = BCryptPasswordEncoder().encode(password)
@@ -71,7 +69,6 @@ class AuthorizationService(
         }
 
     }
-
     override fun registerUser(@RequestBody registerDto: RegisterDTO): ResponseEntity<Any> {
         if (validationAuth.validateRegister(registerDto.email, registerDto.name, registerDto.password)) {
             return this.register(registerDto.name, registerDto.password, registerDto.email, UserRole.USER)
@@ -80,7 +77,6 @@ class AuthorizationService(
             return ResponseEntity.badRequest().build()
         }
     }
-
     override fun registerAdm(@RequestBody registerAdmDTO: RegisterAdmDTO): ResponseEntity<Any> {
         if (validationAuth.validateRegisterAdm(registerAdmDTO)) {
             return this.register(registerAdmDTO.name, registerAdmDTO.password, registerAdmDTO.email, UserRole.ADMIN)
@@ -89,7 +85,6 @@ class AuthorizationService(
         }
         return ResponseEntity.badRequest().build()
     }
-
     fun verifyToken(token: String): String {
         if (validationAuth.validateToken(token)) {
             return tokenService.validateToken(token)

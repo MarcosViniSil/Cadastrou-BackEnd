@@ -18,13 +18,13 @@ class ValidationCard {
         }
     }
 
-    fun validateTokenAndOffset(token: String, offset: Int): Boolean {
-        return token != "INVALID TOKEN" && offset >= 0
+    fun validateTokenAndOffset(offset: Int): Boolean {
+        return  offset >= 0
     }
 
-    fun validateCardDelete(token: String, idCard: Long?): Boolean {
+    fun validateCardDelete(idCard: Long?): Boolean {
         if (idCard != null) {
-            if (token != "INVALID TOKEN" && idCard > 0) {
+            if (idCard > 0) {
                 return true
             }
         }
