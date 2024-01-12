@@ -70,7 +70,13 @@ class UserController(
         return userService.requestDeleteAccount()
     }
 
-
-
+    @GetMapping("/Validate/Email/{email}")
+   fun validateEmail(@PathVariable("email") email:String):String?{
+        return userService.verifyEmail(email)
+   }
+    @PostMapping("/Validate/Code")
+    fun verifyCode(@RequestBody codes:VerifyEmailDTO):ResponseEntity<Any>{
+        return userService.validateCode(codes.codeUser,codes.codeToken)
+    }
 
 }

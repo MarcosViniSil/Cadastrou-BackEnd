@@ -9,7 +9,6 @@ import registered.project.api.entities.User
 import registered.project.api.enums.UserRole
 import registered.project.api.projections.AdmProjection
 import registered.project.api.repositories.UserRepository
-import registered.project.api.service.auth.AuthorizationService
 import registered.project.api.service.email.EmailService
 
 @Service
