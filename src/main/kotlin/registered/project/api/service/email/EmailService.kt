@@ -15,7 +15,6 @@ class EmailService(
 
 ) {
 
-
     fun sendEmailToAdm(user: User,toDelete:User) {
 
         var msg = SimpleMailMessage()

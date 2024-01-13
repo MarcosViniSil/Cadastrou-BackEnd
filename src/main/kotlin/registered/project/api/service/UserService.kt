@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import registered.project.api.entities.User
 import registered.project.api.repositories.UserRepository
 import registered.project.api.service.auth.AuthorizationService
+import registered.project.api.service.email.RememberUserCardsService
 import registered.project.api.service.email.VerifyEmailService
 import registered.project.api.service.header.RecoverToken
 
@@ -14,7 +15,8 @@ class UserService(
     private val recoverToken: RecoverToken,
     private val authorizationService: AuthorizationService,
     private val admService: AdmService,
-    private val validateEmail: VerifyEmailService
+    private val validateEmail: VerifyEmailService,
+    private val rememberUserCardsService: RememberUserCardsService
 ) {
 
     fun requestDeleteAccount(): ResponseEntity<Any> {
@@ -35,7 +37,7 @@ class UserService(
     }
 
     fun verifyEmail(email:String):String?{
-        return validateEmail.validateEmail(email)
+        return validateEmail.sendCodeEmail(email)
     }
    fun validateCode(codeUser:String,codeToken:String):ResponseEntity<Any>{
        val code =validateEmail.decrypt(codeToken)
@@ -44,4 +46,8 @@ class UserService(
        }
        return ResponseEntity.badRequest().build()
    }
+
+    fun alertUsers(){
+        rememberUserCardsService.alertUsers()
+    }
 }

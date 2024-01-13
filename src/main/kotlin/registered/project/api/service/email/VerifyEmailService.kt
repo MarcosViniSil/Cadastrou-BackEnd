@@ -19,9 +19,9 @@ class VerifyEmailService(
     @Value("\${api-key-encrypt}")
     private lateinit var key: String
 
-    fun validateEmail(email: String): String? {
+    fun sendCodeEmail(email: String): String? {
         val msg = SimpleMailMessage()
-        val code = this.generateRandomWord(this.generateCodeCard())
+        val code = this.generateRandomWord(this.generateLengthWord())
         msg.setTo(email)
         msg.setSubject("Vefique seu email para conclusão do cadastro!")
         msg.setText("Código para Validação: $code")
@@ -36,9 +36,10 @@ class VerifyEmailService(
         return null
     }
 
-    private fun generateCodeCard(): Int {
-        return (4 .. 6).random()
+    private fun generateLengthWord(): Int {
+        return (4..6).random()
     }
+
     private fun generateRandomWord(length: Int): String {
         val alphabet = "abcdefghijklmnopqrstuvwxyz"
         return (1..length)
@@ -60,8 +61,6 @@ class VerifyEmailService(
         val decryptedBytes: ByteArray = cipher.doFinal(decodedBytes)
         return String(decryptedBytes)
     }
-
-
 
 
 }
