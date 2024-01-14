@@ -23,7 +23,7 @@ class VerifyEmailService(
         val msg = SimpleMailMessage()
         val code = this.generateRandomWord(this.generateLengthWord())
         msg.setTo(email)
-        msg.setSubject("Vefique seu email para conclusão do cadastro!")
+        msg.setSubject("Verifique seu email para conclusão do cadastro!")
         msg.setText("Código para Validação: $code")
 
         try {
@@ -31,6 +31,7 @@ class VerifyEmailService(
             return this.encryptCode(code)
         } catch (ex: MailException) {
             System.err.println(ex.cause);
+            println("email fail:$email")
         }
 
         return null

@@ -27,6 +27,7 @@ class EmailService(
 
         } catch (ex: MailException) {
             System.err.println(ex.cause);
+            println("email fail:${user.email}")
         }
 
 

@@ -7,7 +7,7 @@ import java.sql.Date
 
 @Entity(name = "tb_card")
 class Card(
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     var name: String? = null,
     var description: String? = null,

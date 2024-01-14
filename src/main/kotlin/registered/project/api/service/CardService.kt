@@ -8,6 +8,8 @@ import registered.project.api.dtos.AddCardDTO
 import registered.project.api.dtos.ListCardsDTO
 import registered.project.api.entities.Card
 import registered.project.api.entities.User
+import registered.project.api.exceptions.TokenInvalidException
+import registered.project.api.exceptions.UserNotExistsException
 import registered.project.api.projections.CardProjection
 import registered.project.api.repositories.CardRepository
 import registered.project.api.repositories.UserRepository
@@ -36,85 +38,97 @@ class CardService(
         }
         return null
     }
+
     private fun findEmail(token: String): String? {
         val responseToken: String = this.authorizationService.verifyToken(token)
         if (responseToken != "INVALID TOKEN") {
             return responseToken
-
+        }else{
+            throw TokenInvalidException("Token invalid")
         }
-        return null
     }
+
     private fun createCard(addCardDTO: AddCardDTO): Card {
         return Card(
             name = addCardDTO.name, description = addCardDTO.description,
             dateFinish = addCardDTO.dateFinish, colorNumber = generateCodeCard(), frequency = addCardDTO.frequency
         )
     }
+
     private fun generateCodeCard(): Int {
         return (1..6).random()
     }
+
     private fun responseToken(): String? {
         val token: String = this.recoverToken.getToken()
         return this.findEmail(token)
     }
+
     override fun addCardUser(addCardDTO: AddCardDTO): ResponseEntity<Any> {
         if (validationCard.validateCard(addCardDTO.name, addCardDTO.description, addCardDTO.dateFinish)) {
             val user: User? = this.findUserByEmail()
             if (user != null) {
-                    val card: Card = this.createCard(addCardDTO)
-                    var listCards: MutableList<Card>? = user.cards
-                    if (listCards == null) {
-                        listCards = mutableListOf(card)
-                    } else {
-                        listCards.add(card)
-                    }
-                    if (user.cardsNumbers == null) {
-                        user.cardsNumbers = 1
-                    } else {
-                        user.cardsNumbers = user.cardsNumbers!!.plus(1)
-                    }
-                    card.user = user
-                    user.cards = listCards
-                    user.updatedAt = Date(System.currentTimeMillis())
-                    cardRepository.save(card)
-                    userRepository.save(user)
-
+                val card: Card = this.createCard(addCardDTO)
+                var listCards: MutableList<Card>? = user.cards
+                if (listCards == null) {
+                    listCards = mutableListOf(card)
+                } else {
+                    listCards.add(card)
                 }
-
+                if (user.cardsNumbers == null) {
+                    user.cardsNumbers = 1
+                } else {
+                    user.cardsNumbers = user.cardsNumbers!!.plus(1)
+                }
+                card.user = user
+                user.cards = listCards
+                user.updatedAt = Date(System.currentTimeMillis())
+                cardRepository.save(card)
+                userRepository.save(user)
+                return ResponseEntity.ok().build()
             } else {
+                throw UserNotExistsException("User not exists, impossible add card")
+            }
+
+        } else {
             return ResponseEntity.badRequest().build()
         }
-        return ResponseEntity.ok().build()
+
     }
+
     override fun listCardsUserExpiredOrNot(offset: Int, expired: Boolean): ListCardsDTO? {
-        if (validationCard.validateTokenAndOffset(offset)) {
+        if (validationCard.validateOffset(offset)) {
             val user: User? = this.findUserByEmail()
             if (user != null) {
 
                 val listCards: MutableList<Card>?
                 val pageable: Pageable = PageRequest.of(offset, 4)
 
-                if (!expired)  {
+                if (!expired) {
                     listCards = cardRepository.listCardsUser(user.id!!, pageable)
                 } else {
                     listCards = cardRepository.listCardsUserExpired(user.id!!, pageable)
                 }
                 val cards: ListCardsDTO = ListCardsDTO(card = listCards)
 
-
                 return cards
 
+            }else{
+                throw UserNotExistsException("User not exists, impossible list card")
             }
         }
         return null
 
     }
+
     override fun listCardsUser(offset: Int): ListCardsDTO? {
         return this.listCardsUserExpiredOrNot(offset, false)
     }
+
     override fun listCardsUserExpired(offset: Int): ListCardsDTO? {
         return this.listCardsUserExpiredOrNot(offset, true)
     }
+
     override fun deleteCard(idCard: Long?) {
         if (validationCard.validateCardDelete(idCard)) {
             val user: User? = this.findUserByEmail()
@@ -127,12 +141,13 @@ class CardService(
                 cardRepository.delete(cardToDelete)
                 userRepository.save(user)
 
+            }else{
+                throw UserNotExistsException("User not exists, impossible add card")
             }
 
         }
 
     }
-
 
 
 }

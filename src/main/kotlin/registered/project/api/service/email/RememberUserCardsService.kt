@@ -10,6 +10,7 @@ import registered.project.api.entities.Card
 import registered.project.api.entities.User
 import registered.project.api.enums.FrequencyCard
 import registered.project.api.enums.UserRole
+import registered.project.api.exceptions.UserNotExistsException
 import registered.project.api.repositories.CardRepository
 import registered.project.api.repositories.UserRepository
 import java.sql.Date
@@ -34,10 +35,10 @@ class RememberUserCardsService(
 
         try {
             sendEmail.send(msg)
-
             return true
         } catch (ex: MailException) {
             System.err.println(ex.cause);
+            println("email fail:${user.email}")
             return false
         }
 

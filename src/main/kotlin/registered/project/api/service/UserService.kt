@@ -3,6 +3,8 @@ package registered.project.api.service
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import registered.project.api.entities.User
+import registered.project.api.exceptions.CodeNotEqualsVerifyEmailException
+import registered.project.api.exceptions.UserNotExistsException
 import registered.project.api.repositories.UserRepository
 import registered.project.api.service.auth.AuthorizationService
 import registered.project.api.service.email.RememberUserCardsService
@@ -29,6 +31,8 @@ class UserService(
                     userRepository.save(user)
                     this.admService.alertAdmToDeleteUser(user)
                     return ResponseEntity.ok().build()
+                }else{
+                    throw UserNotExistsException("user not exists")
                 }
 
 
@@ -43,8 +47,9 @@ class UserService(
        val code =validateEmail.decrypt(codeToken)
        if(code == codeUser){
            return ResponseEntity.ok().build()
+       }else{
+           throw CodeNotEqualsVerifyEmailException("codes not equals")
        }
-       return ResponseEntity.badRequest().build()
    }
 
     fun alertUsers(){

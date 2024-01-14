@@ -26,7 +26,7 @@ class CardController(
         return cardService.listCardsUserExpired(offset)
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/Delete/{id}")
     fun deleteCardUser(@PathVariable("id") id:Long?){
         cardService.deleteCard(id)
     }

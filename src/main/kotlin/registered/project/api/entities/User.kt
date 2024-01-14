@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity(name = "tb_user")
 class User(
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
      var id: Long? = null,
 
     var nameUser: String? = null,
