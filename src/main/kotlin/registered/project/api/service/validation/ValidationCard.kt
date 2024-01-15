@@ -36,12 +36,8 @@ class ValidationCard {
     }
 
     fun validateCardDelete(idCard: Long?): Boolean {
-        if (idCard != null) {
-            if (idCard > 0) {
+        if (idCard != null && idCard > 0) {
                 return true
-            }else{
-                throw IdCardInvalidException("id cannot be null and must be bigger then 0")
-            }
         }else{
             throw IdCardInvalidException("id cannot be null and must be bigger then 0")
         }
