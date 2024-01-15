@@ -2,6 +2,7 @@ package registered.project.api.exceptions.handler
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import registered.project.api.exceptions.*
@@ -107,6 +108,21 @@ class RestExceptionHandler {
             .body(
                 ExceptionDetails(
                     title = "codes not equals",
+                    timestamp = LocalDateTime.now(),
+                    status = HttpStatus.NOT_ACCEPTABLE.value(),
+                    exception = ex.javaClass.toString(),
+                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                )
+            )
+
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handlerFieldInvalid(ex: HttpMessageNotReadableException): ResponseEntity<ExceptionDetails> {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+            .body(
+                ExceptionDetails(
+                    title = "field invalid",
                     timestamp = LocalDateTime.now(),
                     status = HttpStatus.NOT_ACCEPTABLE.value(),
                     exception = ex.javaClass.toString(),

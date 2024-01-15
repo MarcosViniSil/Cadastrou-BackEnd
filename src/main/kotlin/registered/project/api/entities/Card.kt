@@ -15,7 +15,7 @@ class Card(
     var colorNumber: Int? = null,
     @Enumerated(EnumType.STRING)
     var frequency: FrequencyCard? = null,
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne
     @JsonBackReference
     var user: User? = null
 

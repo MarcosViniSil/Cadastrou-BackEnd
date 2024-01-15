@@ -138,9 +138,9 @@ class CardService(
                 user.cards?.remove(cardToDelete)
                 user.cardsNumbers = user.cardsNumbers?.minus(1)
                 user.updatedAt = Date(System.currentTimeMillis())
-                cardRepository.delete(cardToDelete)
-                userRepository.save(user)
 
+                userRepository.save(user)
+                cardRepository.deleteById(idCard!!)
             }else{
                 throw UserNotExistsException("User not exists, impossible add card")
             }
