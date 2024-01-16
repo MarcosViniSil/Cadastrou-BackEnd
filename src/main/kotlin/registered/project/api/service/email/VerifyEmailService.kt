@@ -48,7 +48,7 @@ class VerifyEmailService(
             .joinToString("")
     }
 
-    private fun encryptCode(code: String): String {
+     fun encryptCode(code: String): String {
         val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
         cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(key.toByteArray(), "AES"))
         val encryptedBytes: ByteArray = cipher.doFinal(code.toByteArray())

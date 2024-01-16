@@ -21,17 +21,13 @@ class ValidationCardTest {
     @Test
     fun `should return true because the data to add card is valid`(){
         val dateString = "2024-01-18"
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        var dateFormat = format.parse(dateString)
-        dateFormat = Date(dateFormat.time)
+        val dateFormat = generatedDate(dateString)
         Assertions.assertEquals(validationCard.validateCard(name="testCard",description="testDescription",dateFinish=dateFormat), true)
     }
     @Test
     fun `should return LengthNameInvalidException because the name is invalid`(){
         val dateString = "2024-01-18"
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        var dateFormat = format.parse(dateString)
-        dateFormat = Date(dateFormat.time)
+        val dateFormat = generatedDate(dateString)
 
         Assertions.assertThrows(LengthNameInvalidException::class.java) {
             validationCard.validateCard(name="te",description="testDescription",dateFinish=dateFormat)
@@ -40,9 +36,7 @@ class ValidationCardTest {
     @Test
     fun `should return LengthDescriptionInvalidException because the description is invalid`(){
         val dateString = "2024-01-18"
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        var dateFormat = format.parse(dateString)
-        dateFormat = Date(dateFormat.time)
+        val dateFormat = generatedDate(dateString)
 
         Assertions.assertThrows(LengthDescriptionInvalidException::class.java) {
             validationCard.validateCard(name="test",description="t",dateFinish=dateFormat)
@@ -51,15 +45,18 @@ class ValidationCardTest {
     @Test
     fun `should return DateCardInvalidException because the date isn't after the date actual`(){
         val dateString = "2024-01-15"
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        var dateFormat = format.parse(dateString)
-        dateFormat = Date(dateFormat.time)
+        val dateFormat = generatedDate(dateString)
 
         Assertions.assertThrows(DateCardInvalidException::class.java) {
             validationCard.validateCard(name="testname",description="testDescription",dateFinish=dateFormat)
         }
     }
+    companion object {
+        fun generatedDate(dateString:String):Date{
+            val format = SimpleDateFormat("yyyy-MM-dd")
+            var dateFormat = format.parse(dateString)
+            dateFormat = Date(dateFormat.time)
+            return dateFormat
+        }
+    }
 }
-
-
-//``

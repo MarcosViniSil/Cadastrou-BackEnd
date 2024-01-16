@@ -10,13 +10,11 @@ import registered.project.api.entities.Card
 import registered.project.api.entities.User
 import registered.project.api.enums.FrequencyCard
 import registered.project.api.enums.UserRole
-import registered.project.api.exceptions.UserNotExistsException
 import registered.project.api.repositories.CardRepository
 import registered.project.api.repositories.UserRepository
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
 @Service
@@ -68,24 +66,28 @@ class RememberUserCardsService(
         }
 
         if (frequency == FrequencyCard.AVERAGE) {
-                var dataString = cards?.get(0)?.dateFinish
-                val localDate = dataString?.toLocalDate()
-                val dayOfWeek = localDate?.dayOfWeek
-                val currentDate = LocalDate.now()
-                val dayOfweekActual = currentDate.dayOfWeek
+            var dataString = cards?.get(0)?.dateFinish
+            val localDate = dataString?.toLocalDate()
+            val dayOfWeek = localDate?.dayOfWeek
+            val currentDate = LocalDate.now()
+            val dayOfWeekActual = currentDate.dayOfWeek
+            if (dayOfWeek == dayOfWeekActual) {
+                return true
+            } else {
                 if (dayOfWeek?.value!! % 2 == 0) {
-                    if (dayOfweekActual.value % 2 != 0) {
+                    if (dayOfWeekActual.value % 2 != 0) {
                         return true
                     } else {
                         return false
                     }
                 } else {
-                    if (dayOfweekActual.value % 2 == 0) {
+                    if (dayOfWeekActual.value % 2 == 0) {
                         return true
                     } else {
                         return false
                     }
                 }
+            }
 
 
         }
@@ -98,28 +100,28 @@ class RememberUserCardsService(
 
     }
 
-    fun alertUsers(){
-        var offset:Int = 0
+    fun alertUsers() {
+        var offset: Int = 0
         var pageable: Pageable = PageRequest.of(offset, 4)
         var pageableCards: Pageable = PageRequest.of(0, 1)
-        var users:MutableList<User>?= userRepository.listToAdm(pageable,UserRole.USER)
+        var users: MutableList<User>? = userRepository.listToAdm(pageable, UserRole.USER)
 
-            while (users?.size != 0) {
+        while (users?.size != 0) {
 
-                if(users!=null) {
-                for(i in 0 until users.size){
-                   var listCards = cardRepository.listCardsUser(users[i].id!!,pageableCards)
-                    if(listCards?.size!=0){
-                    var response = this.decideFrequencyEmails(listCards?.get(0)?.frequency!!,listCards)
-                    if(response!=null && response==true) {
-                        this.sendEmailRememberUsersCards(users[i])
-                    }
+            if (users != null) {
+                for (i in 0 until users.size) {
+                    val listCards = cardRepository.listCardsUser(users[i].id!!, pageableCards)
+                    if (listCards?.size != 0) {
+                        val response = this.decideFrequencyEmails(listCards?.get(0)?.frequency!!, listCards)
+                        if (response != null && response == true) {
+                            this.sendEmailRememberUsersCards(users[i])
+                        }
                     }
                 }
 
                 offset++
                 pageable = PageRequest.of(offset, 4)
-                users = userRepository.listToAdm(pageable,UserRole.USER)
+                users = userRepository.listToAdm(pageable, UserRole.USER)
 
 
             }

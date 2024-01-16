@@ -73,7 +73,7 @@ class AuthorizationService(
         if (validationAuth.validateRegister(registerDto.email, registerDto.name, registerDto.password)) {
             return this.register(registerDto.name, registerDto.password, registerDto.email, UserRole.USER)
         } else {
-            //TODO Exception some data invalid
+
             return ResponseEntity.badRequest().build()
         }
     }
