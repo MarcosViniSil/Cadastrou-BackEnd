@@ -78,9 +78,5 @@ class UserController(
     fun verifyCode(@RequestBody codes:VerifyEmailDTO):ResponseEntity<Any>{
         return userService.validateCode(codes.codeUser,codes.codeToken)
     }
-    @GetMapping("/Alert")
-    fun testSendEmail(){
-        userService.alertUsers()
-    }
 
 }

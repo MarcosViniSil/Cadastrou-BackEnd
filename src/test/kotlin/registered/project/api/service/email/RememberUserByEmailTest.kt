@@ -6,6 +6,7 @@ import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.http.ResponseEntity
 import org.springframework.mail.javamail.JavaMailSender
 import registered.project.api.entities.Card
 import registered.project.api.entities.User
@@ -57,7 +58,6 @@ class RememberUserByEmailTest {
         var card:Card = Card(id=1,name="testCard",description="testDescription",dateFinish=dateFormat)
         var cards: MutableList<Card>? = mutableListOf<Card>(card)
         Assertions.assertEquals(rememberUserCardsService.decideFrequencyEmails(FrequencyCard.LOW,cards),true)
-
     }
 
     @Test

@@ -19,9 +19,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "password invalid, count characters",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -34,9 +32,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "Data invalid register ADM",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -49,9 +45,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "name invalid, count characters",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -64,9 +58,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "Description invalid, count characters",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -79,9 +71,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "User not exists",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -94,9 +84,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "Token invalid",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -109,9 +97,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "codes not equals",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -124,9 +110,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "field invalid",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -139,9 +123,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "Offset invalid ",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -154,9 +136,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "Date card invalid, must be after date actual",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -169,9 +149,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "id cannot be null and must be bigger then 0",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 
@@ -184,9 +162,7 @@ class RestExceptionHandler {
                 ExceptionDetails(
                     title = "Email invalid",
                     timestamp = LocalDateTime.now(),
-                    status = HttpStatus.NOT_ACCEPTABLE.value(),
-                    exception = ex.javaClass.toString(),
-                    details = mutableMapOf(ex.cause.toString() to ex.message)
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
             )
 

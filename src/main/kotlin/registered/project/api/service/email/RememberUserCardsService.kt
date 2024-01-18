@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.mail.MailException
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import registered.project.api.entities.Card
 import registered.project.api.entities.User
@@ -71,6 +72,7 @@ class RememberUserCardsService(
             val dayOfWeek = localDate?.dayOfWeek
             val currentDate = LocalDate.now()
             val dayOfWeekActual = currentDate.dayOfWeek
+
             if (dayOfWeek == dayOfWeekActual) {
                 return true
             } else {
@@ -100,6 +102,7 @@ class RememberUserCardsService(
 
     }
 
+    @Scheduled(cron = "0 00 16 * * ?")
     fun alertUsers() {
         var offset: Int = 0
         var pageable: Pageable = PageRequest.of(offset, 4)
