@@ -105,7 +105,7 @@ class RememberUserCardsService(
     @Scheduled(cron = "0 00 16 * * ?")
     fun alertUsers() {
         var offset: Int = 0
-        
+
         var pageable: Pageable = PageRequest.of(offset, 4)
         var pageableCards: Pageable = PageRequest.of(0, 1)
         var users: MutableList<User>? = userRepository.listToAdm(pageable, UserRole.USER)
