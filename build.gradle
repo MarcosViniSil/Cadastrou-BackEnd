@@ -37,6 +37,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'io.mockk:mockk:1.13.4'
+	testImplementation group: 'com.ninja-squad', name: 'springmockk', version: '4.0.2'
 }
 
 dependencyManagement {
