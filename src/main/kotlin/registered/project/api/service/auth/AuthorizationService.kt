@@ -15,6 +15,8 @@ import registered.project.api.dtos.RegisterDTO
 import registered.project.api.dtos.TokenDTO
 import registered.project.api.entities.User
 import registered.project.api.enums.UserRole
+import registered.project.api.exceptions.UserAlreadyExistsException
+import registered.project.api.exceptions.UserNotExistsException
 import registered.project.api.projections.UserProjection
 import registered.project.api.repositories.UserRepository
 import registered.project.api.security.TokenService
@@ -50,13 +52,7 @@ class AuthorizationService(
         val user = userRepository?.findByEmailCustom(email)
         val encryptedPassword = BCryptPasswordEncoder().encode(password)
         if (user != null) {
-            user.nameUser = name
-            user.email = email
-            user.password = encryptedPassword
-            user.role = role
-            user.updatedAt = Date(System.currentTimeMillis())
-            userRepository?.save(user)
-            return ResponseEntity.ok().build()
+            throw UserAlreadyExistsException("user already exists")
         } else {
             val newUser = User()
             newUser.nameUser = name
@@ -68,6 +64,21 @@ class AuthorizationService(
             return ResponseEntity.ok().build()
         }
 
+    }
+    override fun update(name: String, password: String, email: String, role: UserRole): ResponseEntity<Any> {
+        val user = userRepository?.findByEmailCustom(email)
+        val encryptedPassword = BCryptPasswordEncoder().encode(password)
+        if (user != null) {
+            user.nameUser = name
+            user.email = email
+            user.password = encryptedPassword
+            user.role = role
+            user.updatedAt = Date(System.currentTimeMillis())
+            userRepository?.save(user)
+            return ResponseEntity.ok().build()
+        }else{
+            throw UserNotExistsException("user not exists")
+        }
     }
 
     override fun registerUser(@RequestBody registerDto: RegisterDTO): ResponseEntity<Any> {
@@ -82,9 +93,25 @@ class AuthorizationService(
         if (validationAuth.validateRegisterAdm(registerAdmDTO)) {
             return this.register(registerAdmDTO.name, registerAdmDTO.password, registerAdmDTO.email, UserRole.ADMIN)
         } else {
-            //TODO some data invalid
+            return ResponseEntity.badRequest().build()
         }
-        return ResponseEntity.badRequest().build()
+
+    }
+    override fun updaterUser(@RequestBody registerDto: RegisterDTO): ResponseEntity<Any> {
+        if (validationAuth.validateRegister(registerDto.email, registerDto.name, registerDto.password)) {
+            return this.update(registerDto.name, registerDto.password, registerDto.email, UserRole.USER)
+        } else {
+
+            return ResponseEntity.badRequest().build()
+        }
+    }
+    override fun updateAdm(@RequestBody registerAdmDTO: RegisterAdmDTO): ResponseEntity<Any> {
+        if (validationAuth.validateRegisterAdm(registerAdmDTO)) {
+            return this.update(registerAdmDTO.name, registerAdmDTO.password, registerAdmDTO.email, UserRole.ADMIN)
+        } else {
+            return ResponseEntity.badRequest().build()
+        }
+
     }
     fun verifyToken(token: String): String {
         if (validationAuth.validateToken(token)) {

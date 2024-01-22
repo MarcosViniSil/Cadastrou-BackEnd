@@ -16,6 +16,7 @@ class CardController(
     fun cardRegister(@RequestBody user2: AddCardDTO): ResponseEntity<Any> {
         return cardService.addCardUser(user2)
     }
+
     @GetMapping("/{offset}")
     fun listCardsUser(@PathVariable("offset") offset:Int): ListCardsDTO? {
         return cardService.listCardsUser(offset)

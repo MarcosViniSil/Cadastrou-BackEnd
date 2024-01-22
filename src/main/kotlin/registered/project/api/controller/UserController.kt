@@ -39,14 +39,14 @@ class UserController(
     @PutMapping("/UpdateUser")
     fun updateUser(@RequestBody userUpdate: RegisterDTO): ResponseEntity<Any> {
 
-        return authorizationService.registerUser(userUpdate)
+        return authorizationService.updaterUser(userUpdate)
 
     }
 
     @PutMapping("/UpdateAdm")
     fun updateAdm(@RequestBody admUpdate: RegisterAdmDTO): ResponseEntity<Any> {
 
-        return authorizationService.registerAdm(admUpdate)
+        return authorizationService.updateAdm(admUpdate)
 
     }
 
