@@ -69,6 +69,7 @@ class AuthorizationService(
         }
 
     }
+
     override fun registerUser(@RequestBody registerDto: RegisterDTO): ResponseEntity<Any> {
         if (validationAuth.validateRegister(registerDto.email, registerDto.name, registerDto.password)) {
             return this.register(registerDto.name, registerDto.password, registerDto.email, UserRole.USER)
