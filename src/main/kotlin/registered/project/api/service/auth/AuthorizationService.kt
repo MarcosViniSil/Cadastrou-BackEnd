@@ -39,11 +39,16 @@ class AuthorizationService(
     }
     override fun login(@RequestBody data: LoginDTO): ResponseEntity<Any> {
         if (validationAuth.validateLogin(data)) {
-            authenticationManager = context.getBean(AuthenticationManager::class.java)
-            val usernamePassword = UsernamePasswordAuthenticationToken(data.email, data.password)
-            val auth = authenticationManager!!.authenticate(usernamePassword)
-            val token: String = tokenService!!.generatedToken(auth.principal as User)
-            return ResponseEntity.ok<Any>(TokenDTO(token))
+            val user = userRepository?.findByEmailCustom(data.email)
+            if(user!=null) {
+                authenticationManager = context.getBean(AuthenticationManager::class.java)
+                val usernamePassword = UsernamePasswordAuthenticationToken(data.email, data.password)
+                val auth = authenticationManager!!.authenticate(usernamePassword)
+                val token: String = tokenService!!.generatedToken(auth.principal as User)
+                return ResponseEntity.ok<Any>(TokenDTO(token))
+            }else{
+                throw UserNotExistsException("User not exists")
+            }
         } else {
             return ResponseEntity.badRequest().build()
         }

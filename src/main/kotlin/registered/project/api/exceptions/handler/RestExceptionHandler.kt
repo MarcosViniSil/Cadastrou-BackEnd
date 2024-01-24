@@ -17,7 +17,7 @@ class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
             .body(
                 ExceptionDetails(
-                    title = "senha invalida, quantidade de caracteres deve ser entre 8 e 20",
+                    title = "senha inválida, quantidade de caracteres deve ser entre 8 e 20",
                     timestamp = LocalDateTime.now(),
                     status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
@@ -30,7 +30,7 @@ class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
             .body(
                 ExceptionDetails(
-                    title = "dados invalidos para registrar um ADM",
+                    title = "dados inválidos para registrar um ADM",
                     timestamp = LocalDateTime.now(),
                     status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
@@ -43,7 +43,7 @@ class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
             .body(
                 ExceptionDetails(
-                    title = "tamanho de nome invalido",
+                    title = "tamanho de nome inválido",
                     timestamp = LocalDateTime.now(),
                     status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
@@ -56,7 +56,7 @@ class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
             .body(
                 ExceptionDetails(
-                    title = "usuario já existe",
+                    title = "usuário já existe",
                     timestamp = LocalDateTime.now(),
                     status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
@@ -69,7 +69,7 @@ class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
             .body(
                 ExceptionDetails(
-                    title = "descrição invalida, tamanho do texto",
+                    title = "descrição inválida, tamanho do texto",
                     timestamp = LocalDateTime.now(),
                     status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
@@ -82,7 +82,7 @@ class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
             .body(
                 ExceptionDetails(
-                    title = "usuario nao existe",
+                    title = "usuário não existe",
                     timestamp = LocalDateTime.now(),
                     status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
@@ -134,7 +134,7 @@ class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
             .body(
                 ExceptionDetails(
-                    title = "deslocamento invalido ",
+                    title = "deslocamento inválido ",
                     timestamp = LocalDateTime.now(),
                     status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
@@ -147,7 +147,7 @@ class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
             .body(
                 ExceptionDetails(
-                    title = "data de card invalida, a data deve ser após a data atual",
+                    title = "data de card inválida, a data deve ser após a data atual",
                     timestamp = LocalDateTime.now(),
                     status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
@@ -173,7 +173,7 @@ class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
             .body(
                 ExceptionDetails(
-                    title = "email invalido",
+                    title = "email inválido",
                     timestamp = LocalDateTime.now(),
                     status = HttpStatus.NOT_ACCEPTABLE.value()
                 )
