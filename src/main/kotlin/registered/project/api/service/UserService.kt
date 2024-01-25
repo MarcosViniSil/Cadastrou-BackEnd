@@ -2,6 +2,7 @@ package registered.project.api.service
 
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import registered.project.api.dtos.CodeEmailDTO
 import registered.project.api.entities.User
 import registered.project.api.exceptions.CodeNotEqualsVerifyEmailException
 import registered.project.api.exceptions.UserNotExistsException
@@ -40,7 +41,7 @@ class UserService(
         return ResponseEntity.badRequest().build()
     }
 
-    fun verifyEmail(email:String):String?{
+    fun verifyEmail(email:String): CodeEmailDTO?{
         return validateEmail.sendCodeEmail(email)
     }
    fun validateCode(codeUser:String,codeToken:String):ResponseEntity<Any>{

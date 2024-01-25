@@ -71,7 +71,7 @@ class UserController(
     }
 
     @GetMapping("/Validate/Email/{email}")
-   fun validateEmail(@PathVariable("email") email:String):String?{
+   fun validateEmail(@PathVariable("email") email:String):CodeEmailDTO?{
         return userService.verifyEmail(email)
    }
     @PostMapping("/Validate/Code")

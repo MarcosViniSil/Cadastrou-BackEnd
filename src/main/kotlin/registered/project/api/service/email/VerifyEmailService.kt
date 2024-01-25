@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 import org.springframework.stereotype.Service
+import registered.project.api.dtos.CodeEmailDTO
 import kotlin.random.Random
 import java.util.Base64
 
@@ -19,7 +20,7 @@ class VerifyEmailService(
     @Value("\${api-key-encrypt}")
     private lateinit var key: String
 
-    fun sendCodeEmail(email: String): String? {
+    fun sendCodeEmail(email: String): CodeEmailDTO? {
         val msg = SimpleMailMessage()
         val code = this.generateRandomWord(this.generateLengthWord())
         msg.setTo(email)
@@ -28,7 +29,8 @@ class VerifyEmailService(
 
         try {
             sendEmail.send(msg)
-            return this.encryptCode(code)
+            var codeSend:CodeEmailDTO= CodeEmailDTO(code=this.encryptCode(code))
+            return codeSend
         } catch (ex: MailException) {
             System.err.println(ex.cause);
             println("email fail:$email")
