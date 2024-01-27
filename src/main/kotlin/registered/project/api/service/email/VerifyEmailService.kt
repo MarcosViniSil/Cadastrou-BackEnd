@@ -8,12 +8,18 @@ import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 import org.springframework.stereotype.Service
 import registered.project.api.dtos.CodeEmailDTO
+import registered.project.api.entities.User
+import registered.project.api.exceptions.EmailAlreadyExistsException
+import registered.project.api.exceptions.EmailCodeException
+import registered.project.api.repositories.UserRepository
 import kotlin.random.Random
 import java.util.Base64
 
 @Service
 class VerifyEmailService(
-    private val sendEmail: JavaMailSender
+    private val sendEmail: JavaMailSender,
+    private val userRepository:UserRepository
+
 
 ) {
 
@@ -21,19 +27,27 @@ class VerifyEmailService(
     private lateinit var key: String
 
     fun sendCodeEmail(email: String): CodeEmailDTO? {
-        val msg = SimpleMailMessage()
-        val code = this.generateRandomWord(this.generateLengthWord())
-        msg.setTo(email)
-        msg.setSubject("Verifique seu email para conclusão do cadastro!")
-        msg.setText("Código para Validação: $code")
+        val isUserExists: User? = this.userRepository.findByEmailCustom(email)
 
-        try {
-            sendEmail.send(msg)
-            var codeSend:CodeEmailDTO= CodeEmailDTO(code=this.encryptCode(code))
-            return codeSend
-        } catch (ex: MailException) {
-            System.err.println(ex.cause);
-            println("email fail:$email")
+        if(isUserExists==null) {
+            val msg = SimpleMailMessage()
+            val code = this.generateRandomWord(this.generateLengthWord())
+            msg.setTo(email)
+            msg.setSubject("Verifique seu email! CADASTROU")
+            msg.setText("Código para Validação: $code")
+
+            try {
+                sendEmail.send(msg)
+                val codeSend: CodeEmailDTO = CodeEmailDTO(code = this.encryptCode(code))
+                return codeSend
+            } catch (ex: MailException) {
+                System.err.println(ex.cause);
+                println("email fail:$email")
+                throw EmailCodeException("error sending code to email")
+
+            }
+        }else{
+            throw EmailAlreadyExistsException("email already exists")
         }
 
         return null

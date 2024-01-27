@@ -128,6 +128,31 @@ class RestExceptionHandler {
             )
 
     }
+    @ExceptionHandler(EmailCodeException::class)
+    fun handlerCodeEmailException(ex: EmailCodeException): ResponseEntity<ExceptionDetails> {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+            .body(
+                ExceptionDetails(
+                    title = "Ocorreu um erro ao enviar o código, solicite novamente",
+                    timestamp = LocalDateTime.now(),
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
+                )
+            )
+
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException::class)
+    fun handlerEmailAlreadyExists(ex: EmailAlreadyExistsException): ResponseEntity<ExceptionDetails> {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+            .body(
+                ExceptionDetails(
+                    title = "email já cadastrado",
+                    timestamp = LocalDateTime.now(),
+                    status = HttpStatus.NOT_ACCEPTABLE.value()
+                )
+            )
+
+    }
 
     @ExceptionHandler(OffSetInvalidException::class)
     fun handlerOffsetInvalid(ex: OffSetInvalidException): ResponseEntity<ExceptionDetails> {
