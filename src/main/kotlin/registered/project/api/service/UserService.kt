@@ -3,8 +3,11 @@ package registered.project.api.service
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import registered.project.api.dtos.CodeEmailDTO
+import registered.project.api.dtos.RoleUserDTO
 import registered.project.api.entities.User
+import registered.project.api.enums.UserRole
 import registered.project.api.exceptions.CodeNotEqualsVerifyEmailException
+import registered.project.api.exceptions.TokenInvalidException
 import registered.project.api.exceptions.UserNotExistsException
 import registered.project.api.repositories.UserRepository
 import registered.project.api.service.auth.AuthorizationService
@@ -55,5 +58,20 @@ class UserService(
 
     fun alertUsers(){
         rememberUserCardsService.alertUsers()
+    }
+
+    fun getRoleUserByEmail():RoleUserDTO?{
+        val token: String = this.recoverToken.getToken()
+        val responseToken: String = this.authorizationService.verifyToken(token)
+        if (responseToken != "INVALID TOKEN") {
+           val roleUser: UserRole? = this.userRepository.getRoleUser(responseToken)
+            if(roleUser!=null){
+                val role:RoleUserDTO = RoleUserDTO(role=roleUser)
+                return role
+            }
+        }else{
+            throw TokenInvalidException("token invalid")
+        }
+        return null
     }
 }

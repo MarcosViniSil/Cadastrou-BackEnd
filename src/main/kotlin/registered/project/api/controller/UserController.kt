@@ -79,4 +79,9 @@ class UserController(
         return userService.validateCode(codes.codeUser,codes.codeToken)
     }
 
+    @GetMapping("/role")
+    fun getRole():RoleUserDTO?{
+        return this.userService.getRoleUserByEmail()
+    }
+
 }
