@@ -42,7 +42,10 @@ class SecurityConfigurations(
                             .requestMatchers(HttpMethod.GET, "Card/Expired/{offset}").permitAll()
                             .requestMatchers(HttpMethod.GET, "User/Validate/Email/{email}").permitAll()
                             .requestMatchers(HttpMethod.POST, "User/Validate/Code").permitAll()
-                            .requestMatchers(HttpMethod.GET, "User/Alert").permitAll() }
+                            .requestMatchers(HttpMethod.GET, "User/Alert").permitAll()
+                            .requestMatchers(HttpMethod.GET, "User/role").permitAll()
+                            .requestMatchers(HttpMethod.GET, "User/profile").permitAll()
+                            .requestMatchers(HttpMethod.POST, "User/Update/Password").permitAll()}
             .headers { fr -> fr.frameOptions{f -> f.sameOrigin()}}
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()

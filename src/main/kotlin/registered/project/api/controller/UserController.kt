@@ -83,5 +83,13 @@ class UserController(
     fun getRole():RoleUserDTO?{
         return this.userService.getRoleUserByEmail()
     }
+    @GetMapping("/profile")
+    fun getProfile():UserProfileDTO?{
+        return this.userService.getProfileUser()
+    }
+    @PostMapping("/Update/Password")
+    fun updatePassword(@RequestBody newPassword:NewPasswordDTO):ResponseEntity<Any>{
+        return userService.updatePassword(newPassword.password)
+    }
 
 }

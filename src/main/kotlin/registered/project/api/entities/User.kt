@@ -5,7 +5,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import registered.project.api.enums.UserRole
-import java.util.Date;
+import java.util.Date
 
 
 @Entity(name = "tb_user")
