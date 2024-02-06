@@ -27,6 +27,6 @@ interface UserRepository:JpaRepository<User,Long> {
     @Query("SELECT u.role as role FROM tb_user u WHERE u.email = :email")
     fun getRoleUser(email:String): UserRole?
 
-    @Query(nativeQuery = true,value="SELECT id, nameUser AS name, cardsNumbers AS numCards, email FROM tb_user WHERE isToDelete = :toDelete")
+    @Query(nativeQuery = true,value="SELECT id, name_user AS name, cards_numbers AS numCards, email FROM tb_user WHERE is_to_delete = :toDelete")
     fun listUsersToDelete(pageable: Pageable,toDelete:Int):MutableList<UsersToDeleteDTO>?
 }

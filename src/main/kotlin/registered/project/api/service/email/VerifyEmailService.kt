@@ -27,9 +27,7 @@ class VerifyEmailService(
     private lateinit var key: String
 
     fun sendCodeEmail(email: String): CodeEmailDTO? {
-        val isUserExists: User? = this.userRepository.findByEmailCustom(email)
 
-        if(isUserExists==null) {
             val msg = SimpleMailMessage()
             val code = this.generateRandomWord(this.generateLengthWord())
             msg.setTo(email)
@@ -46,9 +44,7 @@ class VerifyEmailService(
                 throw EmailCodeException("error sending code to email")
 
             }
-        }else{
-            throw EmailAlreadyExistsException("email already exists")
-        }
+
 
         return null
     }
