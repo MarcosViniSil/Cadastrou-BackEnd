@@ -1,11 +1,11 @@
 
-# API cujo objetivo é disponibilizar end points para um front-end feito em angular.**[Link front-end](https://github.com/MarcosViniSil/Cadastrou-FrontEnd)**
+## API cujo objetivo é disponibilizar end points para um front-end feito em angular.**[Link front-end](https://github.com/MarcosViniSil/Cadastrou-FrontEnd)**
 ## Tecnologias utilizadas
-- Spring framework
+- Spring Boot
+- Spring Security (JWT + criptografia)
 - Kotlin
 - H2 database
 - MySql
-- Spring Security (JWT + criptografia)
 - Railway
 - PostMan
 - JUnit
