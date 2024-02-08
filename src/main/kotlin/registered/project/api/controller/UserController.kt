@@ -7,7 +7,7 @@ import registered.project.api.entities.User
 import registered.project.api.service.AdmService
 import registered.project.api.service.UserService
 import registered.project.api.service.auth.AuthorizationService
-@CrossOrigin(origins = arrayOf("http://localhost:4200"))
+@CrossOrigin(origins = arrayOf("http://localhost:4200","https://cadastrou.vercel.app/"))
 @RestController
 @RequestMapping("/User")
 class UserController(

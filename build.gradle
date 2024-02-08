@@ -52,7 +52,11 @@ tasks.withType(KotlinCompile) {
 		jvmTarget = '17'
 	}
 }
-
+tasks.jar {
+	manifest {
+		attributes["Main-Class"] = "registered.project.api.RegisteredProjectApplication.kt"
+	}
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }

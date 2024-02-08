@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 import registered.project.api.dtos.AddCardDTO
 import registered.project.api.dtos.ListCardsDTO
 import registered.project.api.service.CardService
-@CrossOrigin(origins = arrayOf("http://localhost:4200"))
+@CrossOrigin(origins = arrayOf("http://localhost:4200","https://cadastrou.vercel.app/"))
 @RestController
 @RequestMapping("/Card")
 class CardController(
