@@ -66,7 +66,11 @@ class ValidationAuth {
     }
 
     private fun validateHashAndPasswordAdm(hash: String, passwordAdm: String): Boolean {
-        if ((hash == this.hashAdm) && passwordAdm == this.passwordAdm) {
+        println("hash"+hash)
+        println("passwordAdm"+passwordAdm)
+        println("this.hashAdm"+this.hashAdm)
+        println("this.passwordAdm"+this.passwordAdm)
+        if ((hash == this.hashAdm) && (passwordAdm == this.passwordAdm)) {
             return true
         } else {
             throw InvalidHashAndPasswordAdm("Invalid Register ADM")
