@@ -102,7 +102,7 @@ class RememberUserCardsService(
 
     }
 
-    @Scheduled(cron = "0 00 16 * * ?")
+    @Scheduled(cron = "0 00 19 * * ?")
     fun alertUsers() {
         var offset: Int = 0
 
